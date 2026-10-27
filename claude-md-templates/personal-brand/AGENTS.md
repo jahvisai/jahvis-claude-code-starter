@@ -1,5 +1,5 @@
 > TEMPLATE: personal brand or creator. Fill every <angle-bracket placeholder>, delete lines you can't answer, then delete these > lines.
-> Keep this file under 120 lines. "30 to 60 second Reels showing AI tools to business owners" beats "tech content".
+> Keep this file under 100 lines. "30 to 60 second Reels showing AI tools to business owners" beats "tech content".
 
 # <Your name>, <your handle>
 

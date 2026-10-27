@@ -18,3 +18,7 @@ cp -Rn "$HERE/claude-md-templates/$NAME/." ./
 echo "Copied the $NAME template into $PWD"
 echo "Next: open AGENTS.md, replace every <angle-bracket placeholder> with real facts, delete the > lines."
 echo "Line 1 of CLAUDE.md must stay: @AGENTS.md"
+echo "If you add a CLAUDE.local.md for your own notes, add it to .gitignore yourself."
+echo "Your own slash commands go in .claude/skills/<name>/SKILL.md (see $HERE/commands/README.md)."
+echo "Your own subagents go in .claude/agents/ (see $HERE/agents/README.md)."
+echo "Check it loaded: start Claude Code here and type /memory."

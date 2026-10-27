@@ -13,10 +13,11 @@ the folder you want to test, and again after any change, move or rename.
 4. The right word means the file loaded. A guess, or "I don't know", means it did not.
 5. Delete the line when you're done. Test an area folder and a project folder separately.
 
-## 2. /context
+## 2. /memory and /context
 
-Type `/context` in the session and look under Memory files. That list is what actually loaded,
-which can differ from what Claude says when it describes its own setup. `/memory` opens the files.
+Type `/memory` in the session. It lists every CLAUDE.md, CLAUDE.local.md, rules and memory file
+that loaded, and opens any of them. Type `/context` to see how much of the window each one uses.
+Those lists are what actually loaded, which can differ from what Claude says about its own setup.
 
 ## 3. The load log (needs the load-log hook)
 
@@ -34,6 +35,6 @@ missing, or you started in the wrong folder. The kit's `.gitignore` keeps the lo
 | Right code word | The file loaded | Nothing |
 | Wrong word or "I don't know" | The file did not load | Check that CLAUDE.md line 1 is exactly `@AGENTS.md`, and that you started inside this folder |
 | Right word only after Claude opened the file | It read the file during the chat, it did not load at start | Same fix as above |
-| File missing from /context | Not loaded | Same fix as above |
+| File missing from /memory | Not loaded | Same fix as above |
 
 Trust the code word and the load log, not Claude's description of itself.

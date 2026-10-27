@@ -80,6 +80,6 @@ A good command in this bank has three parts, in this order:
    guessed assumptions.
 
 Save any prompt you find yourself retyping more than twice, either as a row
-in this bank, or as a proper slash command (see `commands/goal-contract.md` in this
-kit for a fuller example) if you use it often enough to want it one keystroke
+in this bank, or as a proper slash command, saved as a skill (see `commands/goal-contract.md` in this
+kit for a fuller example, installed to `~/.claude/skills/goal-contract/SKILL.md`) if you use it often enough to want it one keystroke
 away.

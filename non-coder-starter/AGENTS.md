@@ -3,7 +3,7 @@
 Updated: <YYYY-MM-DD>
 
 <!-- Facts for any AI tool working in this folder. Claude reads this file through the
-     @AGENTS.md line in CLAUDE.md beside it. Keep it under 120 lines. -->
+     @AGENTS.md line in CLAUDE.md beside it. Keep it under 100 lines. -->
 
 ## What this folder is
 

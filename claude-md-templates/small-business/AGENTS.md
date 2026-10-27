@@ -1,5 +1,5 @@
 > TEMPLATE: small business. Fill every <angle-bracket placeholder>, delete lines you can't answer, then delete these > lines.
-> Keep this file under 120 lines. Write it the way you'd brief a new hire on day one.
+> Keep this file under 100 lines. Write it the way you'd brief a new hire on day one.
 
 # <Business name>
 

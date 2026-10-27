@@ -6,7 +6,7 @@ Updated: <YYYY-MM-DD>
 > jah-new-project-lite skill fills it for you; by hand: replace every angle-bracket placeholder,
 > keep exactly ONE stack profile block (content-ops if there is no code), delete this header.
 > Facts only in this file. Claude-only notes live in the CLAUDE.md beside it, whose line 1 is
-> `@AGENTS.md`. Keep the finished file under 120 lines.
+> `@AGENTS.md`. Keep the finished file under 100 lines.
 
 ## Scope
 

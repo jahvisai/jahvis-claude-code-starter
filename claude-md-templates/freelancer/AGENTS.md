@@ -1,5 +1,5 @@
 > TEMPLATE: freelancer. Fill every <angle-bracket placeholder>, delete lines you can't answer, then delete these > lines.
-> Keep this file under 120 lines. Specific beats long: "branding for dental practices" beats "design".
+> Keep this file under 100 lines. Specific beats long: "branding for dental practices" beats "design".
 
 # <Your name>, <your business name>
 
