@@ -1,5 +1,6 @@
 > TEMPLATE: small business. Fill every <angle-bracket placeholder>, delete lines you can't answer, then delete these > lines.
-> Keep this file under 100 lines. Write it the way you'd brief a new hire on day one.
+> Aim for under 120 lines, never over 200. Write it the way you'd brief a new hire on day one.
+> In a workspace with a shared context/ folder? Add one plain line near the top, with the real relative path: "Read first: ../../context/customer-personas.md and ../../context/brand-voice.md." Do not use an @import for it.
 
 # <Business name>
 

@@ -1,5 +1,6 @@
 > TEMPLATE: personal brand or creator. Fill every <angle-bracket placeholder>, delete lines you can't answer, then delete these > lines.
-> Keep this file under 100 lines. "30 to 60 second Reels showing AI tools to business owners" beats "tech content".
+> Aim for under 120 lines, never over 200. "30 to 60 second Reels showing AI tools to business owners" beats "tech content".
+> In a workspace with a shared context/ folder? Add one plain line near the top, with the real relative path: "Read first: ../../context/customer-personas.md and ../../context/brand-voice.md." Do not use an @import for it.
 
 # <Your name>, <your handle>
 

@@ -4,8 +4,16 @@
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 NAME="${1:-}"
+if [ "$NAME" = "workspace" ]; then
+  if [ "$PWD" = "$HOME" ]; then echo "Stop: you are in your home folder. cd into a NEW empty folder (for example ~/work) first."; exit 1; fi
+  if [ -e AGENTS.md ] || [ -e CLAUDE.md ]; then echo "This folder already has an AGENTS.md or CLAUDE.md. Nothing was copied."; exit 0; fi
+  cp -Rn "$HERE/workspace-root/." ./
+  echo "Copied the workspace root into $PWD"
+  echo "Next: fill the <placeholders> in AGENTS.md and context/, delete departments you will not open weekly."
+  exit 0
+fi
 if [ -z "$NAME" ] || [ ! -d "$HERE/claude-md-templates/$NAME" ]; then
-  echo "Pick one template:"; ls "$HERE/claude-md-templates"; echo "Example: bash $HERE/install.sh small-business"; exit 1
+  echo "Pick one template (or: workspace):"; ls "$HERE/claude-md-templates"; echo "Example: bash $HERE/install.sh small-business"; exit 1
 fi
 if [ "$PWD" = "$HOME" ]; then echo "Stop: you are in your home folder. cd into one project or client folder first."; exit 1; fi
 if [ -e AGENTS.md ] || [ -e CLAUDE.md ]; then

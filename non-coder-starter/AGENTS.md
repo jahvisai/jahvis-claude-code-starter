@@ -5,6 +5,8 @@ Updated: <YYYY-MM-DD>
 <!-- Facts for any AI tool working in this folder. Claude reads this file through the
      @AGENTS.md line in CLAUDE.md beside it. Keep it under 100 lines. -->
 
+> In a workspace with a shared context/ folder? Add one plain line near the top, with the real relative path: "Read first: ../../context/customer-personas.md and ../../context/brand-voice.md." Do not use an @import for it.
+
 ## What this folder is
 
 <one sentence: the business process this folder runs, e.g. "Turns new client intake forms

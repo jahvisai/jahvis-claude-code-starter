@@ -8,6 +8,8 @@ Updated: <YYYY-MM-DD>
 > Facts only in this file. Claude-only notes live in the CLAUDE.md beside it, whose line 1 is
 > `@AGENTS.md`. Keep the finished file under 100 lines.
 
+> In a workspace with a shared context/ folder? Add one plain line near the top, with the real relative path: "Read first: ../../context/customer-personas.md and ../../context/brand-voice.md." Do not use an @import for it.
+
 ## Scope
 
 - **What this project IS:** <one sentence>

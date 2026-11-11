@@ -7,6 +7,8 @@ Free, ready-to-use files for [Claude Code](https://claude.com/claude-code): CLAU
 | Folder | What it is |
 |---|---|
 | `claude-md-templates/` | Fill-in-the-blank templates: `freelancer`, `personal-brand`, `small-business`. Each is an `AGENTS.md` (your facts) plus a thin `CLAUDE.md` (line 1 is `@AGENTS.md`). |
+| `claude-md-examples/` | Three finished examples, one per template, each an invented business with every blank filled, plus one annotated `AGENTS.md` that labels each section and says why it is there. Read these, copy a template. |
+| `workspace-root/` | The top of your workspace: a root map, a shared `context/` folder (overview, offers and pricing, customer personas, brand voice) and one folder per department (marketing, sales, operations, finance, clients). Install with `bash install.sh workspace`. |
 | `project-scaffold/` | A clean project or client folder: AGENTS.md, CLAUDE.md, lessons.md, safe `.gitignore`. |
 | `non-coder-starter/` | A business process run through Claude: workflows, tools, house rules. |
 | `rules-example/` | A rule that loads only for one client's files. |
@@ -27,7 +29,7 @@ Free, ready-to-use files for [Claude Code](https://claude.com/claude-code): CLAU
    ```bash
    bash ~/jahvis-claude-code-starter/install.sh small-business
    ```
-4. Open `AGENTS.md`, replace every `<angle-bracket placeholder>`, delete the `>` lines, start Claude Code in the folder, and run the code-word test in `proof/CODE-WORD-TEST.md`.
+4. Open `AGENTS.md`, replace every `<angle-bracket placeholder>` (see a finished one in `claude-md-examples/`), delete the `>` lines, aim for under 120 lines and never over 200, start Claude Code in the folder, and run the code-word test in `proof/CODE-WORD-TEST.md`.
 
 ## How Claude Code reads these files (the short version)
 
@@ -62,5 +64,7 @@ Nothing here runs by itself. There is no install script that downloads and execu
 ## Learn how to use all of this
 
 The lessons live in the JAHVIS AI community: https://www.skool.com/jahvis-ai (course 03, Claude Code).
+
+Next step for sales work: add a `business` department to your workspace (`~/work/business`, your sales department, with leads, sales, clients and reports). It is not in this repo on purpose, because it is where your lead and client data will live, and that data never belongs in a public repo. The starter folder is attached to the lesson "Create Your Folder Architecture" in the Lead Gen, Sales and CRM Automation course of the same community.
 
 MIT licensed. Use it, change it, make it yours.
