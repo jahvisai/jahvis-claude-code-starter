@@ -24,6 +24,8 @@ A department is a folder you start Claude Code in at least weekly.
 | clients/ | one folder per client, each its own launch point (delete if you have none) |
 | inbox/ | anything new that has not been sorted yet |
 | archive/ | done or stale work, kept for reference |
+| decisions/ | `log.md`: every decision with its date and reason, added to and never edited |
+| connections.md | which tool each business area uses and how Claude reaches it |
 
 ## Find your folder
 
@@ -36,6 +38,8 @@ A department is a folder you start Claude Code in at least weekly.
 | one client's work | clients/<client>/ |
 | who we sell to, what we sell, how we sound | context/ (edit only there) |
 | something unsorted | inbox/ |
+| why we chose something | decisions/log.md |
+| which app holds what | connections.md |
 
 ## Where to start a session
 

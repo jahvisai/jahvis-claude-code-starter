@@ -8,7 +8,8 @@ Free, ready-to-use files for [Claude Code](https://claude.com/claude-code): CLAU
 |---|---|
 | `claude-md-templates/` | Fill-in-the-blank templates: `freelancer`, `personal-brand`, `small-business`. Each is an `AGENTS.md` (your facts) plus a thin `CLAUDE.md` (line 1 is `@AGENTS.md`). |
 | `claude-md-examples/` | Three finished examples, one per template, each an invented business with every blank filled, plus one annotated `AGENTS.md` that labels each section and says why it is there. Read these, copy a template. |
-| `workspace-root/` | The top of your workspace: a root map, a shared `context/` folder (overview, offers and pricing, customer personas, brand voice) and one folder per department (marketing, sales, operations, finance, clients). Install with `bash install.sh workspace`. |
+| `.claude/skills/jah-setup-interview/` | The setup interview. Open this folder in Claude Code and type `/jah-setup-interview`: at most seven questions, each answer saved before the next, then your workspace `AGENTS.md`, `context/` and `connections.md` are filled for you. |
+| `workspace-root/` | The top of your workspace: a root map, a shared `context/` folder (overview, offers and pricing, customer personas, brand voice), one folder per department (marketing, sales, operations, finance, clients), `connections.md` (the tool each business area uses and how Claude reaches it), `decisions/log.md` (dated decisions, added to and never edited) and the `/jah-grill` skill (Claude interviews you about a plan and saves every answer). Install with `bash install.sh workspace`. |
 | `project-scaffold/` | A clean project or client folder: AGENTS.md, CLAUDE.md, lessons.md, safe `.gitignore`. |
 | `non-coder-starter/` | A business process run through Claude: workflows, tools, house rules. |
 | `rules-example/` | A rule that loads only for one client's files. |
@@ -17,6 +18,16 @@ Free, ready-to-use files for [Claude Code](https://claude.com/claude-code): CLAU
 | `session-files/` | The "canary" CLAUDE.md, HANDOFF and RISKS templates, `/clear` vs `/compact` guide. |
 | `commands/` | A goal-contract command (install it as a skill) and a bank of prompts to copy. |
 | `agents/` | Three starter agents and a model-picking cheat sheet. They go in `.claude/agents/`. |
+
+## Set up a whole workspace by interview (start here if you have no work folder)
+
+1. Get this repo onto your computer (once):
+   ```bash
+   git clone https://github.com/jahvisai/jahvis-claude-code-starter.git ~/jahvis-claude-code-starter
+   ```
+2. Open the `jahvis-claude-code-starter` folder in Claude Code.
+3. Type `/jah-setup-interview` and answer the questions. Have two or three things you wrote yourself ready to paste (a post, a customer email): that is how Claude learns your voice.
+4. Open a new session in the workspace it built (`~/work` by default) and ask: "What is this workspace, and where does a new client go?"
 
 ## Use a template in 4 steps
 
@@ -57,6 +68,29 @@ Your folders hold copies. This repo stays untouched, so updating it never touche
 cd ~/jahvis-claude-code-starter && git pull
 ```
 
+## What to add later, and what never to add
+
+Start with what is here. Add a piece only when the work asks for it.
+
+| Add this | When |
+|---|---|
+| A skill | You have asked Claude for the same job three times |
+| A connection to a tool | Work in that area keeps stopping because Claude cannot see the tool. Write it in `connections.md`, start it read only |
+| A department folder | You open that kind of work every week |
+| A rule | You have corrected Claude on the same thing twice |
+| A subagent | One job keeps filling your session with reading |
+| A scheduled job | You have run the job by hand three times and it came out right each time |
+
+Never add these:
+
+- A real key, password or login in any file in your workspace. Keys live in one `.env` per project, and `.env` stays out of GitHub.
+- Client or lead data in a public repo.
+- A second copy of a fact. Prices, customers and voice live in `context/` and nowhere else.
+- A skill or plugin you have not read. It is instructions Claude will follow in your name.
+- A connection that can write or send before you have tested it read only.
+- A job that sends, posts or pays on a schedule without your yes.
+- More lines in the root `AGENTS.md` once it passes 100. It loads into every session, so a fact for one department goes in that department.
+
 ## Safety
 
 Nothing here runs by itself. There is no install script that downloads and executes code from the internet: `install.sh` only copies files, and you can read it first. Never put real keys, passwords or client data in a file you push to GitHub.
@@ -68,3 +102,5 @@ The lessons live in the JAHVIS AI community: https://www.skool.com/jahvis-ai (co
 Next step for sales work: add a `business` department to your workspace (`~/work/business`, your sales department, with leads, sales, clients and reports). It is not in this repo on purpose, because it is where your lead and client data will live, and that data never belongs in a public repo. The starter folder is attached to the lesson "Create Your Folder Architecture" in the Lead Gen, Sales and CRM Automation course of the same community.
 
 MIT licensed. Use it, change it, make it yours.
+
+Credit: the `/jah-grill` skill is adapted from the `grill-me` skill in Nate Herk's AIS-OS starter kit (https://github.com/nateherkai/AIS-OS, MIT License).
