@@ -1,6 +1,6 @@
 ---
 name: jah-setup-interview
-description: Set up a new business workspace from this starter by interview. Asks at most 7 questions, one at a time, saves each answer to a file before the next question, then fills the workspace AGENTS.md, the context/ folder and connections.md from the saved answers. Use for "set up my workspace", "run the setup interview", "/jah-setup-interview", or the first time someone opens this starter folder and asks what to do.
+description: Set up a new business workspace from this starter by interview, or fill in a workspace folder the person already has. Asks at most 7 questions, one at a time, saves each answer to a file before the next question, then fills the workspace AGENTS.md, the context/ folder and connections.md from the saved answers. Use for "set up my workspace", "run the setup interview", "/jah-setup-interview", or the first time someone opens this starter folder and asks what to do.
 ---
 
 # /jah-setup-interview: build a workspace from seven saved answers
@@ -12,27 +12,48 @@ step 4.
 The answers file is the record, not this chat. Save each answer to it before you ask the
 next question, so a closed window or a full session loses nothing.
 
-## 1. Pick the workspace folder and copy the starter in
+## 1. Find the workspace folder
 
-1. The workspace folder is `~/work` unless the person names another one. If that folder
-   already holds files, stop and ask for a new folder name. Never use the home folder,
-   Desktop, Documents or Downloads.
-2. Create the folder, then run the copy from inside it. The copy never overwrites a file:
+1. The workspace folder is `~/work` unless the person names another one. Never use the home
+   folder, Desktop, Documents or Downloads.
+2. Look at the folder before you copy anything. It is one of three cases:
+
+   | The folder | Case | What you do |
+   |---|---|---|
+   | Is missing or empty | New workspace | Step 3 |
+   | Has an `AGENTS.md` or `CLAUDE.md` at its top and a `context/` folder | Existing workspace | Step 4 |
+   | Holds other files | Not a workspace | Stop and ask for a new folder name |
+
+3. New workspace: create the folder, then run the copy from inside it. The copy never
+   overwrites a file:
 
    ```bash
    mkdir -p ~/work && cd ~/work && bash ~/jahvis-claude-code-starter/install.sh workspace
    ```
 
-3. Create `setup-answers.md` in the workspace folder with this header, before question 1:
+4. Existing workspace: say in one line that you will fill in the folder they have and
+   overwrite nothing. Do not run the install. Copy in only the pieces below, and each one
+   only if it is missing:
+
+   ```bash
+   cd ~/work && S=~/jahvis-claude-code-starter/workspace-root && mkdir -p context decisions .claude/skills
+   for f in connections.md decisions/log.md context/business-overview.md context/customer-personas.md context/offers-and-pricing.md context/brand-voice.md; do [ -e "$f" ] || cp "$S/$f" "$f"; done
+   [ -e .claude/skills/jah-grill ] || cp -R "$S/.claude/skills/jah-grill" .claude/skills/
+   ```
+
+   Never add a department folder the person does not have.
+
+5. Create `setup-answers.md` in the workspace folder with this header, before question 1:
 
    ```
    # Setup answers
    Started: <today, from the shell: date +%F>
    Status: in progress
+   Workspace: <new or existing>
    Next question: 1
    ```
 
-4. Tell the person in one line where the workspace is and that every answer is saved to
+6. Tell the person in one line where the workspace is and that every answer is saved to
    `setup-answers.md`.
 
 If `setup-answers.md` already exists there, read it and continue from its "Next question"
@@ -62,6 +83,10 @@ Rules for asking:
   more for a paste. If they have nothing to paste, record "no samples yet" and leave
   `brand-voice.md` as the unfilled template.
 - Never ask for a password, key or login. Question 6 wants tool names only.
+- In an existing workspace, read before you ask. Open the file each answer goes to. If it
+  already holds a real answer (not a `<placeholder>`), show that answer in one line and ask
+  "Keep this, or change it?". Save a kept answer as "kept" with what the file says. The
+  first setup usually answered questions 4 and 7 already.
 
 ## 3. After every answer, before the next question
 
@@ -76,6 +101,10 @@ If the save fails, say so and fix it before you ask anything else.
 ## 4. Fill the workspace from the answers file
 
 Read `setup-answers.md` from disk and work only from it.
+
+In an existing workspace, change only what the answers changed. Edit `AGENTS.md` in place and
+never rewrite it. Skip any item whose answer is "kept". Never delete a folder, so skip item 2.
+Never replace text the person wrote with a placeholder.
 
 1. `AGENTS.md`: put in the business name and today's date, keep only the departments from
    answer 4 in both tables, write answer 7 as the first hard rule, delete the `>` lines.

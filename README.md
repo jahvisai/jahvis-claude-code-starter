@@ -19,7 +19,7 @@ Free, ready-to-use files for [Claude Code](https://claude.com/claude-code): CLAU
 | `commands/` | A goal-contract command (install it as a skill) and a bank of prompts to copy. |
 | `agents/` | Three starter agents and a model-picking cheat sheet. They go in `.claude/agents/`. |
 
-## Set up a whole workspace by interview (start here if you have no work folder)
+## Set up a whole workspace by interview (works with no work folder, or one you already have)
 
 1. Get this repo onto your computer (once):
    ```bash
@@ -27,7 +27,8 @@ Free, ready-to-use files for [Claude Code](https://claude.com/claude-code): CLAU
    ```
 2. Open the `jahvis-claude-code-starter` folder in Claude Code.
 3. Type `/jah-setup-interview` and answer the questions. Have two or three things you wrote yourself ready to paste (a post, a customer email): that is how Claude learns your voice.
-4. Open a new session in the workspace it built (`~/work` by default) and ask: "What is this workspace, and where does a new client go?"
+4. Already have a work folder? The interview fills in that folder instead. It adds what is missing (`connections.md`, `decisions/log.md`, your voice samples) and overwrites nothing.
+5. Open a new session in the workspace (`~/work` by default) and ask: "What is this workspace, and where does a new client go?"
 
 ## Use a template in 4 steps
 
