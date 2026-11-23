@@ -4,6 +4,16 @@
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 NAME="${1:-}"
+if [ "$NAME" = "skill" ]; then
+  # Install the setup interview for every folder, so it works from your work folder (no need to open this repo).
+  D="$HOME/.claude/skills/jah-setup-interview"
+  mkdir -p "$HOME/.claude/skills"
+  if [ -e "$D" ]; then rm -rf "$D"; fi
+  cp -R "$HERE/.claude/skills/jah-setup-interview" "$D"
+  echo "Installed /jah-setup-interview for every folder."
+  echo "Next: open a NEW Claude Code session in your work folder and type /jah-setup-interview"
+  exit 0
+fi
 if [ "$NAME" = "workspace" ]; then
   if [ "$PWD" = "$HOME" ]; then echo "Stop: you are in your home folder. cd into a NEW empty folder (for example ~/work) first."; exit 1; fi
   if [ -e AGENTS.md ] || [ -e CLAUDE.md ]; then echo "This folder already has an AGENTS.md or CLAUDE.md. Nothing was copied."; exit 0; fi
