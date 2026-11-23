@@ -8,7 +8,7 @@ Free, ready-to-use files for [Claude Code](https://claude.com/claude-code): CLAU
 |---|---|
 | `claude-md-templates/` | Fill-in-the-blank templates: `freelancer`, `personal-brand`, `small-business`. Each is an `AGENTS.md` (your facts) plus a thin `CLAUDE.md` (line 1 is `@AGENTS.md`). |
 | `claude-md-examples/` | Three finished examples, one per template, each an invented business with every blank filled, plus one annotated `AGENTS.md` that labels each section and says why it is there. Read these, copy a template. |
-| `.claude/skills/jah-setup-interview/` | The setup interview. Open this folder in Claude Code and type `/jah-setup-interview`: at most seven questions, each answer saved before the next, then your workspace `AGENTS.md`, `context/` and `connections.md` are filled for you. |
+| `.claude/skills/jah-setup-interview/` | The setup interview. Run `bash ~/jahvis-claude-code-starter/install.sh skill`, open a new session in your work folder and type `/jah-setup-interview`: at most seven questions, each answer saved before the next, then your workspace `AGENTS.md`, `context/` and `connections.md` are filled for you. |
 | `workspace-root/` | The top of your workspace: a root map, a shared `context/` folder (overview, offers and pricing, customer personas, brand voice), one folder per department (marketing, sales, operations, finance, clients), `connections.md` (the tool each business area uses and how Claude reaches it), `decisions/log.md` (dated decisions, added to and never edited) and the `/jah-grill` skill (Claude interviews you about a plan and saves every answer). Install with `bash install.sh workspace`. |
 | `project-scaffold/` | A clean project or client folder: AGENTS.md, CLAUDE.md, lessons.md, safe `.gitignore`. |
 | `non-coder-starter/` | A business process run through Claude: workflows, tools, house rules. |
@@ -25,8 +25,12 @@ Free, ready-to-use files for [Claude Code](https://claude.com/claude-code): CLAU
    ```bash
    git clone https://github.com/jahvisai/jahvis-claude-code-starter.git ~/jahvis-claude-code-starter
    ```
-2. Open the `jahvis-claude-code-starter` folder in Claude Code.
-3. Type `/jah-setup-interview` and answer the questions. Have two or three things you wrote yourself ready to paste (a post, a customer email): that is how Claude learns your voice.
+   Always clone into your home folder with that exact command. Do not clone into a folder that already has files: git refuses, and a clone placed inside your work folder hides the skill.
+2. Install the interview so it works from any folder:
+   ```bash
+   bash ~/jahvis-claude-code-starter/install.sh skill
+   ```
+3. Open a NEW Claude Code session in your work folder (the one you want filled in, for example `~/work`), not in this repo. Type `/jah-setup-interview` and answer the questions. Have two or three things you wrote yourself ready to paste (a post, a customer email): that is how Claude learns your voice.
 4. Already have a work folder? The interview fills in that folder instead. It adds what is missing (`connections.md`, `decisions/log.md`, your voice samples) and overwrites nothing.
 5. Open a new session in the workspace (`~/work` by default) and ask: "What is this workspace, and where does a new client go?"
 
