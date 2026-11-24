@@ -1,0 +1,167 @@
+# jah-session-tools test log, 2026-11-24 (Mac, Python 3.14.7, Claude Code 2.1.331 (Claude Code))
+## 1. Scripted checks: python3 proof/session-tools-test.py
+
+== B1: recommended settings on a scratch settings file ==
+Change to <scratch>/settings.json (lines with + are added, nothing is removed):
+--- settings.json now
++++ settings.json after
+@@ -7,5 +7,7 @@
+     "allow": [
+       "Bash(npm test *)",
+-      "Bash(git status *)"
++      "Bash(git status *)",
++      "Bash(git diff *)",
++      "Bash(git log *)"
+     ],
+     "deny": [
+@@ -24,4 +26,15 @@
+         ]
+       }
++    ],
++    "Notification": [
++      {
++        "matcher": "permission_prompt|idle_prompt",
++        "hooks": [
++          {
++            "type": "command",
++            "command": "osascript -e 'display notification \"Claude needs you\" with title \"Claude Code\"' || true"
++          }
++        ]
++      }
+     ]
+   }
+Dry run. Nothing was changed.
+
+PASS dry run changes nothing
+PASS dry run shows the exact change
+Change to <scratch>/settings.json (lines with + are added, nothing is removed):
+--- settings.json now
++++ settings.json after
+@@ -7,5 +7,7 @@
+     "allow": [
+       "Bash(npm test *)",
+-      "Bash(git status *)"
++      "Bash(git status *)",
++      "Bash(git diff *)",
++      "Bash(git log *)"
+     ],
+     "deny": [
+@@ -24,4 +26,15 @@
+         ]
+       }
++    ],
++    "Notification": [
++      {
++        "matcher": "permission_prompt|idle_prompt",
++        "hooks": [
++          {
++            "type": "command",
++            "command": "osascript -e 'display notification \"Claude needs you\" with title \"Claude Code\"' || true"
++          }
++        ]
++      }
+     ]
+   }
+Done. Backup: <scratch>/settings.json.bak-2026-11-24-181355
+Undo: python3 "~/work/business/skool/.claude/worktrees/session-tools-waiting-d34e05/giveaways/jahvis-claude-code-starter/plugins/jah-session-tools/skills/jah-session-setup/scripts/settings_merge.py" --undo-recommended --settings "<scratch>/settings.json"
+
+PASS file is valid JSON after
+PASS earlier keys kept
+PASS 3 read-only git rules present once each
+PASS desktop notice hook added for this computer  [osascript -e 'display notification "Claude needs you" with title "Claude Code"' || true]
+PASS backup made
+PASS second run adds nothing
+Change to <scratch>/settings.json (lines with - are taken out):
+--- settings.json now
++++ settings.json after
+@@ -7,7 +7,5 @@
+     "allow": [
+       "Bash(npm test *)",
+-      "Bash(git status *)",
+-      "Bash(git diff *)",
+-      "Bash(git log *)"
++      "Bash(git status *)"
+     ],
+     "deny": [
+@@ -26,15 +24,4 @@
+         ]
+       }
+-    ],
+-    "Notification": [
+-      {
+-        "matcher": "permission_prompt|idle_prompt",
+-        "hooks": [
+-          {
+-            "type": "command",
+-            "command": "osascript -e 'display notification \"Claude needs you\" with title \"Claude Code\"' || true"
+-          }
+-        ]
+-      }
+     ]
+   }
+Undone. Backup of the file before the undo: <scratch>/settings.json.bak-2026-11-24-181355
+
+PASS undo restores the original exactly (the user's own git status rule is kept)
+
+== B1: no settings file at all ==
+PASS file made and valid
+PASS undo leaves an empty settings object
+
+== B1: broken settings file ==
+PASS stops, changes nothing
+
+== B2: waiting on you ==
+{"systemMessage": "Waiting on you: 2 questions are still open from before (2 in HANDOFF.md). Answer them before starting that work again.", "hookSpecificOutput": {"hookEventName": "SessionStart", "additionalContext": "Questions this folder is still waiting on the person to answer:\n- (HANDOFF.md) Which logo should the site use? (asked 2026-11-23; blocked: the home page)\n- (HANDOFF.md) Is the price $49 or $59? (asked 2026-11-23; blocked: the sales page)\nIf the person's first message starts the same work again, mention these first and offer to answer them here. When one is answered, the jah-wrap skill removes it from HANDOFF.md."}}
+PASS 2 open questions: one line naming 2  [22 ms]
+PASS no open questions: prints nothing  [23 ms]
+{"systemMessage": "Waiting on you: 1 question is still open from before (1 in an earlier session in this folder). Answer it before starting that work again.", "hookSpecificOutput": {"hookEventName": "SessionStart", "additionalContext": "Questions this folder is still waiting on the person to answer:\n- (earlier session, still open in the session list) Should the footer show your phone number?\nIf the person's first message starts the same work again, mention these first and offer to answer them here. When one is answered, the jah-wrap skill removes it from HANDOFF.md."}}
+PASS earlier session still waiting on a question is counted (answered one is not)  [24 ms]
+PASS an unanswered question box counts too
+
+== B2: session end writes the open question to HANDOFF.md ==
+# HANDOFF
+
+## Waiting on you
+- [ ] Should the footer show your phone number? (asked 2026-11-24; blocked: the work that question was about, the session ended before you answered)
+
+
+## 2026-11-23: done
+### What is done
+- all of it
+
+PASS question written under Waiting on you with date and blocked  [24 ms]
+PASS second end does not write it twice
+PASS same question in HANDOFF.md and the old session is counted once
+
+== B2: the hook never fails a session start ==
+PASS garbage input (start): exit 0, silent
+PASS garbage input (end): exit 0, silent
+PASS empty input (start): exit 0, silent
+PASS empty input (end): exit 0, silent
+PASS a list (start): exit 0, silent
+PASS a list (end): exit 0, silent
+PASS missing folder (start): exit 0, silent
+PASS missing folder (end): exit 0, silent
+PASS HANDOFF.md is a folder (start): exit 0, silent
+PASS HANDOFF.md is a folder (end): exit 0, silent
+
+== Plugin hooks file ==
+PASS hooks.json is valid and has the 3 events  [SessionEnd, SessionStart, UserPromptSubmit]
+
+30 of 30 checks passed
+exit code: 0
+
+## 2. Real transcript files on the test Mac (questions not printed)
+517 real transcripts read with no error; 10 end on an unanswered question; 60 recent ones read in 87 ms.
+
+## 3. Live session: claude -p --plugin-dir plugins/jah-session-tools in a scratch folder whose HANDOFF.md has 2 open items
+SessionStart hook from the plugin ran, exit_code 0, outcome success, output:
+{"systemMessage": "Waiting on you: 2 questions are still open from before (2 in HANDOFF.md). Answer them before starting that work again.
+Session finished normally (result success).
+
+## 4. Mac desktop notice command run once by hand: exit 0, notice shown.
+
+## Not tested
+- Windows and Linux: the notice commands and the python3-or-python fallback were not run on those systems.
+- The desktop app: whether it shows the systemMessage line, and whether SessionEnd fires when a session is closed there.
+- The two skills end to end with a student on a clean computer.
