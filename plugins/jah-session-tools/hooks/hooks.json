@@ -5,7 +5,30 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/skills/jah-session-setup/hooks/jah-handoff-reminder.py\""
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/skills/jah-session-setup/hooks/jah-handoff-reminder.py\" || python \"${CLAUDE_PLUGIN_ROOT}/skills/jah-session-setup/hooks/jah-handoff-reminder.py\""
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/skills/jah-session-setup/hooks/jah-waiting-on-you.py\" start || python \"${CLAUDE_PLUGIN_ROOT}/skills/jah-session-setup/hooks/jah-waiting-on-you.py\" start",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/skills/jah-session-setup/hooks/jah-waiting-on-you.py\" end || python \"${CLAUDE_PLUGIN_ROOT}/skills/jah-session-setup/hooks/jah-waiting-on-you.py\" end",
+            "timeout": 10
           }
         ]
       }

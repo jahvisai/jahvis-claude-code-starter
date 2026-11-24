@@ -28,6 +28,23 @@ The person you help may be new to all of this. Use short, plain words. Do every 
    ```
 4. Write only true things. If you did not check it, do not put it under "What is done".
 
+## 1b. Keep the "Waiting on you" list right
+
+This list holds questions the person has not answered yet. It sits near the top of HANDOFF.md, right
+under the title and above the dated blocks, so the next session sees it first.
+
+1. Read the `## Waiting on you` list if it is there. For each item the person has now answered (in this
+   session, or by saying so), delete that line. Put the answer in this block's "What is done" or
+   "What is next". If the list is now empty, delete the heading too.
+2. Look at this session: did you ask the person anything they have not answered yet? For each one, add a
+   line under `## Waiting on you` (make the heading if it is missing):
+
+   ```
+   - [ ] <the question, one line> (asked <YYYY-MM-DD>; blocked: <what cannot go on until it is answered>)
+   ```
+3. Never add a question that was answered. Never delete one that was not.
+4. If anything is waiting, say in one line: "N questions are waiting on you. They are at the top of HANDOFF.md."
+
 ## 2. Save and upload the work (only if this folder uses git)
 
 1. Run `git rev-parse --is-inside-work-tree`. If it fails, say in one line:
