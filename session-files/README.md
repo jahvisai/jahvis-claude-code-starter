@@ -12,6 +12,26 @@ Tools that help you start, run and end a Claude Code session without remembering
 | `canary-CLAUDE.md` | Shows how the name line tells you Claude still follows your rules. | Read it. Setup adds the line for you. |
 | `clear-vs-compact-guide.md` | When to start fresh and when to shrink a session. | Read it once. |
 
-The two skills are in `.claude/skills/` in this starter. The hook is in `.claude/skills/jah-session-setup/hooks/`.
+The two skills and the hook are one plugin, `jah-session-tools`, in `plugins/jah-session-tools/` in this starter.
+The hook file is `plugins/jah-session-tools/skills/jah-session-setup/hooks/jah-handoff-reminder.py`.
 
-To undo the hook: `python3 ~/.claude/skills/jah-session-setup/scripts/settings_merge.py --uninstall`
+## Install (the plugin way, gets updates)
+
+In the desktop app or a terminal, these two commands add our free marketplace and install the plugin:
+
+```bash
+claude plugin marketplace add jahvisai/jahvis-claude-code-starter
+claude plugin install jah-session-tools@jahvis
+```
+
+Then start a new session and type `/jah-session-tools:jah-session-setup` once.
+
+Turn on updates once: type `/plugin` in a terminal session, open the Marketplaces tab, pick `jahvis`, turn auto-update on.
+Without it, get the newest version with `claude plugin update jah-session-tools@jahvis`.
+
+## The older way (copy by hand, no updates)
+
+Copy `plugins/jah-session-tools/skills/jah-session-setup` and `plugins/jah-session-tools/skills/jah-wrap` into `~/.claude/skills/`, then say "run session setup".
+To undo that hook: `python3 ~/.claude/skills/jah-session-setup/scripts/settings_merge.py --uninstall`
+
+If you switch to the plugin, run the setup skill again: it takes the old hook out so the reminder never shows twice.

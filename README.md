@@ -16,9 +16,21 @@ Free, ready-to-use files for [Claude Code](https://claude.com/claude-code): CLAU
 | `proof/` | `CODE-WORD-TEST.md`: how to prove your CLAUDE.md actually loaded. |
 | `settings-and-rules/` | Example global and project settings, rules, and a `.env` example. |
 | `session-files/` | The "canary" CLAUDE.md, HANDOFF and RISKS templates, `/clear` vs `/compact` guide. |
-| `.claude/skills/jah-session-setup/` and `.claude/skills/jah-wrap/` | The session tools. `jah-session-setup` runs once: it asks your name, adds the name line, makes `HANDOFF.md` and installs a reminder that fires when a session gets heavy. `/jah-wrap` updates `HANDOFF.md`, commits and pushes your files, and gives you the line to paste in a new session. How to install: `session-files/README.md`. |
+| `plugins/jah-session-tools/` | The session tools, as a plugin that updates itself. `/jah-session-tools:jah-session-setup` runs once: it asks your name, adds the name line and makes `HANDOFF.md`. `/jah-session-tools:jah-wrap` updates `HANDOFF.md`, commits and pushes your files, and gives you the line to paste in a new session. A reminder tells Claude to suggest a wrap-up when a session gets heavy. Install: see below. |
 | `commands/` | A goal-contract command (install it as a skill) and a bank of prompts to copy. |
 | `agents/` | Three starter agents and a model-picking cheat sheet. They go in `.claude/agents/`. |
+
+## Install the session tools (a plugin that gets updates)
+
+Run these two commands once. The first adds our free marketplace (a list of plugins), the second installs the session tools:
+
+```bash
+claude plugin marketplace add jahvisai/jahvis-claude-code-starter
+claude plugin install jah-session-tools@jahvis
+```
+
+Or type the same thing inside a session: `/plugin install jah-session-tools --marketplace jahvisai/jahvis-claude-code-starter`.
+Then start a new session and type `/jah-session-tools:jah-session-setup`. To get our updates by themselves, turn on auto-update once: `/plugin`, Marketplaces tab, `jahvis`, auto-update on. More: `session-files/README.md`.
 
 ## Set up a whole workspace by interview (works with no work folder, or one you already have)
 
