@@ -16,6 +16,7 @@ Free, ready-to-use files for [Claude Code](https://claude.com/claude-code): CLAU
 | `proof/` | `CODE-WORD-TEST.md`: how to prove your CLAUDE.md actually loaded. |
 | `settings-and-rules/` | Example global and project settings, rules, and a `.env` example. |
 | `session-files/` | The "canary" CLAUDE.md, HANDOFF and RISKS templates, `/clear` vs `/compact` guide. |
+| `.claude/skills/jah-session-setup/` and `.claude/skills/jah-wrap/` | The session tools. `jah-session-setup` runs once: it asks your name, adds the name line, makes `HANDOFF.md` and installs a reminder that fires when a session gets heavy. `/jah-wrap` updates `HANDOFF.md`, commits and pushes your files, and gives you the line to paste in a new session. How to install: `session-files/README.md`. |
 | `commands/` | A goal-contract command (install it as a skill) and a bank of prompts to copy. |
 | `agents/` | Three starter agents and a model-picking cheat sheet. They go in `.claude/agents/`. |
 
