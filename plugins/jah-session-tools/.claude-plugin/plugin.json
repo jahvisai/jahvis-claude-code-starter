@@ -1,0 +1,10 @@
+{
+  "name": "jah-session-tools",
+  "description": "Session tools from the JAHVIS AI community: /jah-session-tools:jah-session-setup (run once), /jah-session-tools:jah-wrap (end a piece of work) and a reminder that suggests a wrap-up when a session gets heavy.",
+  "author": {
+    "name": "JAHVIS AI"
+  },
+  "homepage": "https://www.skool.com/jahvis-ai",
+  "repository": "https://github.com/jahvisai/jahvis-claude-code-starter",
+  "license": "MIT"
+}

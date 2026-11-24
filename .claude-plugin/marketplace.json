@@ -1,0 +1,14 @@
+{
+  "name": "jahvis",
+  "description": "Free Claude Code tools from the JAHVIS AI community (skool.com/jahvis-ai).",
+  "owner": {
+    "name": "JAHVIS AI"
+  },
+  "plugins": [
+    {
+      "name": "jah-session-tools",
+      "source": "./plugins/jah-session-tools",
+      "description": "Session tools: a one-time setup, a wrap-up skill that saves your work and HANDOFF.md, and a reminder when a session gets heavy."
+    }
+  ]
+}
