@@ -1,6 +1,6 @@
 ---
 name: jah-session-setup
-description: One-time setup for the session tools. Asks one question (what Claude should call you), adds your name line to your global rules file, makes HANDOFF.md, and makes sure the handoff reminder is on exactly once. Use for "set up my sessions", "run session setup", "/jah-session-setup", or the first time someone uses the session tools.
+description: One-time setup for the session tools. Asks what Claude should call you, adds your name line to your global rules file, makes HANDOFF.md, makes sure the handoff reminder is on exactly once, and (after showing the exact change and getting a yes) turns on the recommended settings - read-only git commands without asking and a desktop notice when Claude needs you. Use for "set up my sessions", "run session setup", "/jah-session-setup", or the first time someone uses the session tools.
 ---
 
 # /jah-session-setup: set up the session tools, once
@@ -54,6 +54,7 @@ Otherwise:
 - If `~/jahvis-claude-code-starter/session-files/HANDOFF.template.md` exists, copy it to `HANDOFF.md` in the project folder.
 - If not, make `HANDOFF.md` with the title `# HANDOFF` and the four headings the jah-wrap skill uses:
   `### Current state`, `### What is done`, `### What is next`, `### Gotchas and open questions`.
+  (The `## Waiting on you` list is added by jah-wrap only when a question is open.)
 
 ## 5. Make sure the handoff reminder is on, once
 
@@ -81,7 +82,26 @@ The reminder must run once, never twice. (On Windows, use `python` if `python3` 
 4. Tell the person, in one line: "There is now an easier way to get these tools that updates itself: the
    jah-session-tools plugin. The lesson shows how."
 
-## 6. Tell the person what changed and how to undo it
+## 6. Turn on the recommended settings (show first, ask, then apply)
+
+Never write settings by hand and never show the person settings code to copy. The script does it.
+(On Windows, use `python` if `python3` is not found.)
+
+1. Show the exact change, without changing anything:
+   `python3 "SKILL_DIR/scripts/settings_merge.py" --recommended --dry-run`
+2. If it says "already there", say so in one line and go to step 7.
+3. Otherwise show the person the printed change, then explain it in 2 plain lines:
+   - "Claude can run 3 read-only git commands (git status, git diff, git log) without asking you. They only look, they never change files."
+   - "Your computer shows a small notice when Claude is waiting on you (for a yes, or for an answer)."
+   Then ask: "Can I turn these on? (yes or no)" Wait for the answer.
+4. Only on yes, run: `python3 "SKILL_DIR/scripts/settings_merge.py" --recommended`
+   It backs up `~/.claude/settings.json` first, keeps everything already in it, and only adds.
+   If it says "Stopped", show the person the message and change nothing by hand.
+5. On no, change nothing and say: "No problem. You can run this setup again any time."
+6. If the person uses the desktop app and already gets a notice from the app itself, say they can say
+   "undo the recommended settings" later if they get two notices.
+
+## 7. Tell the person what changed and how to undo it
 
 Print a short list, one line per change, each with its undo:
 - Name line in `~/.claude/CLAUDE.md`. Undo: delete that last line.
@@ -92,5 +112,9 @@ Print a short list, one line per change, each with its undo:
   `claude plugin disable jah-session-tools@jahvis`).
 - COPY MODE: Reminder hook on. Undo: `python3 "SKILL_DIR/scripts/settings_merge.py" --uninstall`
   (or copy the `settings.json.bak-<date>` file back over `settings.json`).
+- Recommended settings (if the person said yes). Undo: say "undo the recommended settings", and run
+  `python3 "SKILL_DIR/scripts/settings_merge.py" --undo-recommended`. It takes out only what it added.
+- PLUGIN MODE also brings the "waiting on you" check: when a session starts, Claude tells you in one
+  line if this folder has questions you never answered. Nothing to undo; it turns off with the plugin.
 
 Then say: "Start a new session so the changes load: in the desktop app click + New (in the terminal, type /clear). When work is done, say: wrap up."

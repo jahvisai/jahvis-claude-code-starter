@@ -16,7 +16,7 @@ Free, ready-to-use files for [Claude Code](https://claude.com/claude-code): CLAU
 | `proof/` | `CODE-WORD-TEST.md`: how to prove your CLAUDE.md actually loaded. |
 | `settings-and-rules/` | Example global and project settings, rules, and a `.env` example. |
 | `session-files/` | The "canary" CLAUDE.md, HANDOFF and RISKS templates, `/clear` vs `/compact` guide. |
-| `plugins/jah-session-tools/` | The session tools, as a plugin that updates itself. `/jah-session-tools:jah-session-setup` runs once: it asks your name, adds the name line and makes `HANDOFF.md`. `/jah-session-tools:jah-wrap` updates `HANDOFF.md`, commits and pushes your files, and gives you the line to paste in a new session. A reminder tells Claude to suggest a wrap-up when a session gets heavy. Install: see below. |
+| `plugins/jah-session-tools/` | The session tools, as a plugin that updates itself. 1. `/jah-session-tools:jah-session-setup` runs once: your name line, `HANDOFF.md`, and (after showing the change and getting your yes) read-only git without asking plus a desktop notice when Claude needs you. 2. `/jah-session-tools:jah-wrap` updates `HANDOFF.md`, keeps its "Waiting on you" list, saves and uploads, and gives you the line for a new session. 3. A reminder suggests a wrap-up when a session gets heavy. 4. A check tells you at the start of a session when this folder has questions you never answered. What each one changes and how to undo it: `plugins/jah-session-tools/README.md`. |
 | `commands/` | A goal-contract command (install it as a skill) and a bank of prompts to copy. |
 | `agents/` | Three starter agents and a model-picking cheat sheet. They go in `.claude/agents/`. |
 
@@ -30,7 +30,7 @@ claude plugin install jah-session-tools@jahvis
 ```
 
 Or type the same thing inside a session: `/plugin install jah-session-tools --marketplace jahvisai/jahvis-claude-code-starter`.
-Then start a new session and type `/jah-session-tools:jah-session-setup`. To get our updates by themselves, turn on auto-update once: `/plugin`, Marketplaces tab, `jahvis`, auto-update on. More: `session-files/README.md`.
+Then start a new session and type `/jah-session-tools:jah-session-setup`. To get our updates by themselves, turn on auto-update once: `/plugin`, Marketplaces tab, `jahvis`, auto-update on. What each tool changes on your computer and how to undo it: `plugins/jah-session-tools/README.md`.
 
 ## Set up a whole workspace by interview (works with no work folder, or one you already have)
 

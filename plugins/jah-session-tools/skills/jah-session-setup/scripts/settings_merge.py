@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-"""Add (or remove) the handoff reminder hook in ~/.claude/settings.json.
+"""Change ~/.claude/settings.json for the session tools, safely.
 
 Usage:
-  python3 settings_merge.py            add the hook (copies it to ~/.claude/hooks/ too)
+  python3 settings_merge.py --recommended --dry-run   show the recommended settings change, change nothing
+  python3 settings_merge.py --recommended             apply it (read-only git without asking, desktop notice)
+  python3 settings_merge.py --undo-recommended        take back exactly what --recommended added
+  python3 settings_merge.py            add the reminder hook by hand (copy installs only; copies it to ~/.claude/hooks/ too)
   python3 settings_merge.py --dry-run  show what would change, change nothing
-  python3 settings_merge.py --uninstall  take the hook back out
+  python3 settings_merge.py --uninstall  take the reminder hook back out
+  Add --settings <file> to any of these to work on another settings file (used for testing).
 
 Rules it keeps:
   - It backs up settings.json to settings.json.bak-<date> before any change.
@@ -14,12 +18,27 @@ Standard library only. Works on macOS, Linux and Windows.
 """
 import argparse
 import datetime
+import difflib
 import json
 import os
 import shutil
 import sys
 
 HOOK_NAME = "jah-handoff-reminder.py"
+
+# The recommended settings. Claude Code already treats read-only git commands as safe in most
+# cases; these rules make sure they never ask, in every mode.
+GIT_READ_ONLY = ["Bash(git status *)", "Bash(git diff *)", "Bash(git log *)"]
+NOTICE_TEXT = "Claude needs you"
+NOTICE_COMMANDS = {
+    "mac": "osascript -e 'display notification \"" + NOTICE_TEXT + "\" with title \"Claude Code\"' || true",
+    "linux": "notify-send 'Claude Code' '" + NOTICE_TEXT + "' || true",
+    "windows": "powershell -NoProfile -Command \"[void][Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms');"
+               " (New-Object Windows.Forms.NotifyIcon -Property @{Icon=[Drawing.SystemIcons]::Information; Visible=1})"
+               ".ShowBalloonTip(5000,'Claude Code','" + NOTICE_TEXT + "',0); Start-Sleep 6\"",
+}
+NOTICE_MATCHER = "permission_prompt|idle_prompt"
+RECORD_NAME = "session-setup-added.json"
 COMMAND = 'python3 "$HOME/.claude/hooks/' + HOOK_NAME + '"'
 
 
@@ -96,21 +115,164 @@ def save(path, data):
     os.replace(tmp, path)
 
 
+def platform_key():
+    if sys.platform == "darwin":
+        return "mac"
+    if sys.platform.startswith("win"):
+        return "windows"
+    return "linux"
+
+
+def is_notice(hook):
+    return isinstance(hook, dict) and hook.get("command") in NOTICE_COMMANDS.values()
+
+
+def has_notice(settings):
+    for group in settings.get("hooks", {}).get("Notification", []) or []:
+        if any(is_notice(h) for h in (group or {}).get("hooks", [])):
+            return True
+    return False
+
+
+def with_recommended(settings):
+    """Return (new settings, record of what was added). Keeps everything already there."""
+    new = json.loads(json.dumps(settings))
+    record = {"allow_added": [], "notice_added": None, "created": []}
+    if "permissions" not in new:
+        record["created"].append("permissions")
+    perms = new.setdefault("permissions", {})
+    if "allow" not in perms:
+        record["created"].append("permissions.allow")
+    allow = perms.setdefault("allow", [])
+    for rule in GIT_READ_ONLY:
+        if rule not in allow:
+            allow.append(rule)
+            record["allow_added"].append(rule)
+    if not has_notice(new):
+        if "hooks" not in new:
+            record["created"].append("hooks")
+        hooks = new.setdefault("hooks", {})
+        if "Notification" not in hooks:
+            record["created"].append("hooks.Notification")
+        command = NOTICE_COMMANDS[platform_key()]
+        hooks.setdefault("Notification", []).append(
+            {"matcher": NOTICE_MATCHER, "hooks": [{"type": "command", "command": command}]})
+        record["notice_added"] = command
+    return new, record
+
+
+def without_recommended(settings, record):
+    """Take back exactly what with_recommended added, and nothing else."""
+    new = json.loads(json.dumps(settings))
+    perms = new.get("permissions")
+    if isinstance(perms, dict) and isinstance(perms.get("allow"), list):
+        perms["allow"] = [r for r in perms["allow"] if r not in record.get("allow_added", [])]
+        if not perms["allow"] and "permissions.allow" in record.get("created", []):
+            del perms["allow"]
+        if not perms and "permissions" in record.get("created", []):
+            del new["permissions"]
+    hooks = new.get("hooks")
+    added = record.get("notice_added")
+    if added and isinstance(hooks, dict) and isinstance(hooks.get("Notification"), list):
+        kept = []
+        for group in hooks["Notification"]:
+            inner = [h for h in (group or {}).get("hooks", []) if not (isinstance(h, dict) and h.get("command") == added)]
+            if inner:
+                kept.append(dict(group, hooks=inner))
+        hooks["Notification"] = kept
+        if not kept and "hooks.Notification" in record.get("created", []):
+            del hooks["Notification"]
+        if not hooks and "hooks" in record.get("created", []):
+            del new["hooks"]
+    return new
+
+
+def show_diff(before, after, label):
+    old = json.dumps(before, indent=2).splitlines()
+    new = json.dumps(after, indent=2).splitlines()
+    lines = list(difflib.unified_diff(old, new, label + " now", label + " after", lineterm="", n=2))
+    return "\n".join(lines) if lines else "(no change)"
+
+
+def record_path(settings_path):
+    return os.path.join(os.path.dirname(os.path.abspath(settings_path)), "session-kit", RECORD_NAME)
+
+
+def recommended(settings_path, current, dry_run):
+    new, record = with_recommended(current)
+    if not record["allow_added"] and not record["notice_added"]:
+        print("The recommended settings are already there. Nothing to change.")
+        return 0
+    print("Change to " + tidy(settings_path) + " (lines with + are added, nothing is removed):")
+    print(show_diff(current, new, "settings.json"))
+    if dry_run:
+        print("Dry run. Nothing was changed.")
+        return 0
+    saved = backup(settings_path)
+    save(settings_path, new)
+    rec = record_path(settings_path)
+    os.makedirs(os.path.dirname(rec), exist_ok=True)
+    with open(rec, "w", encoding="utf-8") as fh:
+        json.dump(record, fh, indent=2)
+    print("Done. Backup: " + (tidy(saved) if saved else "none (there was no settings file before)"))
+    print("Undo: python3 \"" + tidy(os.path.abspath(__file__)) + "\" --undo-recommended"
+          + ("" if settings_path == default_settings() else " --settings \"" + tidy(settings_path) + "\""))
+    return 0
+
+
+def undo_recommended(settings_path, current, dry_run):
+    rec = record_path(settings_path)
+    if not os.path.exists(rec):
+        print("Nothing to undo: there is no record of a recommended-settings change here.")
+        return 0
+    with open(rec, "r", encoding="utf-8") as fh:
+        record = json.load(fh)
+    new = without_recommended(current, record)
+    print("Change to " + tidy(settings_path) + " (lines with - are taken out):")
+    print(show_diff(current, new, "settings.json"))
+    if dry_run:
+        print("Dry run. Nothing was changed.")
+        return 0
+    saved = backup(settings_path)
+    save(settings_path, new)
+    os.remove(rec)
+    print("Undone. Backup of the file before the undo: " + tidy(str(saved)))
+    return 0
+
+
+def tidy(path):
+    """Show a path with ~ in place of the home folder, so no private folder name is printed."""
+    home = os.path.expanduser("~")
+    return "~" + path[len(home):] if path.startswith(home) else path
+
+
+def default_settings():
+    return os.path.join(claude_dir(), "settings.json")
+
+
 def main():
-    parser = argparse.ArgumentParser(description="Add or remove the handoff reminder hook.")
+    parser = argparse.ArgumentParser(description="Change settings.json for the session tools, safely.")
     parser.add_argument("--dry-run", action="store_true", help="show the change, write nothing")
     parser.add_argument("--uninstall", action="store_true", help="remove the hook")
+    parser.add_argument("--recommended", action="store_true", help="add the recommended settings")
+    parser.add_argument("--undo-recommended", action="store_true", help="take the recommended settings back out")
+    parser.add_argument("--settings", help="work on this settings file instead of ~/.claude/settings.json")
     args = parser.parse_args()
 
-    settings_path = os.path.join(claude_dir(), "settings.json")
+    settings_path = os.path.abspath(os.path.expanduser(args.settings)) if args.settings else default_settings()
     hook_dest = os.path.join(claude_dir(), "hooks", HOOK_NAME)
     hook_src = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "hooks", HOOK_NAME)
 
     try:
         current = load(settings_path)
     except ValueError as err:
-        print("Stopped: ~/.claude/settings.json is not valid JSON (" + str(err) + "). Nothing changed.")
+        print("Stopped: " + tidy(settings_path) + " is not valid JSON (" + str(err) + "). Nothing changed.")
         return 1
+
+    if args.recommended:
+        return recommended(settings_path, current, args.dry_run)
+    if args.undo_recommended:
+        return undo_recommended(settings_path, current, args.dry_run)
 
     if args.uninstall:
         if not has_ours(current):
